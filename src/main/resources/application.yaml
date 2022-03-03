@@ -1,0 +1,66 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: api.v1.training_dag_run.POST
+          uri: ${host.airflow-webserver}
+          predicates:
+            - Path=/ai-api/v1/training
+            - Method=POST
+          filters:
+            - RewritePath=/ai-api/v1/training, /api/v1/dags/process_training/dagRuns
+            - name: BasicAuth
+              args:
+                username: ${airflow.username}
+                password: ${airflow.password}
+            - ModifyAirflowRqBody
+            - ModifyAirflowRsBody
+
+
+        - id: api.v1.violation_dag_run.POST
+          uri: ${host.airflow-webserver}
+          predicates:
+            - Path=/ai-api/v1/violations
+            - Method=POST
+          filters:
+            - RewritePath=/ai-api/v1/violations, /api/v1/dags/process_violation/dagRuns
+            - name: BasicAuth
+              args:
+                username: ${airflow.username}
+                password: ${airflow.password}
+            - ModifyAirflowRqBody
+            - ModifyAirflowRsBody
+
+
+
+        - id: api.v1.import_markup.POST
+          uri: ${host.markup-import-etl}
+          predicates:
+            - Path=/ai-api/v1/import-markup
+            - Method=POST
+          filters:
+            - RewritePath=/ai-api/v1/import-markup, /violations-load
+
+        - id: api.v1.deploy_models.POST
+          uri: ${host.deployment-export-etl}
+          predicates:
+            - Path=/ai-api/v1/deploy-models
+            - Method=POST
+          filters:
+            - RewritePath=/ai-api/v1/deploy-models, /models-export
+
+        - id: api.v1.training_result.GET
+          uri: ${host.tests-orchestrator}
+          predicates:
+            - Path=/ai-api/v1/training/{run_id}/result
+            - Method=GET
+          filters:
+            - RewritePath=/ai-api/v1/training/(?<RID>.*)/result, /start-tests/$\{RID}/result
+
+        - id: api.v1.increment-import-etl_status.GET
+          uri: ${host.increment-import-etl}
+          predicates:
+            - Path=/ai-api/v1/violations/{run_id}/status/increment-import-etl
+            - Method=GET
+          filters:
+            - RewritePath=/ai-api/v1/violations/(?<RID>.*)/status/increment-import-etl, /data-load/$\{RID}

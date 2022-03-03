@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+airflow:
+  username: ${AIRFLOW_USERNAME}
+  password: ${AIRFLOW_PASSWORD}
+
+host:
+  training-import-etl: http://training-import-etl:8080
+  training-datasets: http://training-datasets:8080
+  training-orchestrator: http://training-orchestrator:8080
+  tests-orchestrator: http://tests-orchestrator:8080
+  increment-import-etl: http://increment-import-etl:8080
+  datasets: http://datasets:8080
+  violations-orchestrator: http://violations-orchestrator:8080
+  violations-export-etl: http://violations-export-etl:8080
+  markup-import-etl: http://markup-import-etl:8080
+  deployment-export-etl: http://deployment-export-etl:8080
+  airflow-webserver: http://airflow-webserver:8080
+
+
+

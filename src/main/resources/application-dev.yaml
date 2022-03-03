@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+airflow:
+  username: airflow
+  password: airflow
+
+host:
+  training-import-etl: http://localhost:8080
+  training-datasets: http://localhost:8080
+  training-orchestrator: http://localhost:8080
+  tests-orchestrator: http://localhost:8080
+  increment-import-etl: http://localhost:8080
+  datasets: http://localhost:8080
+  violations-orchestrator: http://localhost:8080
+  violations-export-etl: http://localhost:8080
+  markup-import-etl: http://localhost:8080
+  deployment-export-etl: http://localhost:8080
+  airflow-webserver: http://airflow.192.168.91.27.sslip.io
+
+
+

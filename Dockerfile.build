@@ -1,0 +1,13 @@
+ARG REGISTRY
+FROM $REGISTRY/maven:3.8.3-openjdk-11-slim as builder
+WORKDIR /app
+COPY . .
+ARG MAVEN_OPTS
+ENV MAVEN_OPTS=${MAVEN_OPTS}
+RUN mvn clean install -DskipTests
+
+ARG REGISTRY
+FROM $REGISTRY/openjdk:11
+WORKDIR /app
+COPY --from=builder /app/target/ai-api*.jar /app/ai-api.jar
+CMD java $JAVA_OPTS -jar ai-api.jar $JAVA_ARGS
